@@ -10,7 +10,7 @@ This project is inspired by readchar by Miguel Angel Garcia, licensed under the 
 
 On windows, this uses one dependency: utf8cpp. The code for this is already included, so you do not need to install anything. But windows is being windows, and likes to be stupid.
 
-Copyright and licence for utf8cpp
+Copyright and licence for utf8cpp https://github.com/nemtrif/utfcpp?tab=readme-ov-file
 
 ```
 Boost Software License - Version 1.0 - August 17th, 2003
