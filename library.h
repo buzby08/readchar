@@ -66,7 +66,7 @@ namespace readchar::exceptions {
         [[nodiscard]] const char* what() const noexcept override {
             return "MissingCharacter: A character was missing in a non-blocking call";
         }
-    }
+    };
 }
 
 namespace readchar {
