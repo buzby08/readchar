@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <conio.h>
+#include <cstdint>
 
 namespace win_readchar {
     int readcharNonBlocking();
@@ -20,7 +21,9 @@ namespace win_readchar {
 
     std::string readkey();
 
-    std::string normalise_utf8(std::string utf8_input);
+    uint32_t get_codepoint(const std::string &utf8_input);
+
+    std::string normalise_utf8(const std::string &utf8_input);
 }
 
 #endif //_WIN32

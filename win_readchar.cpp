@@ -6,9 +6,8 @@
 
 #include "win_readchar.h"
 
-#include <cstdint>
-
 #include "utf8.h"
+
 #include "library.h"
 
 
@@ -83,7 +82,8 @@ std::string win_readchar::readkey() {
     if (vector_contains(check_one, ch))
         ch_as_string = std::string() + '\x00' + readchar();
 
-    if ("\uD800" <= ch_as_string && ch_as_string <= "\uDFFF") {
+    const uint32_t codepoint = get_codepoint(ch_as_string);
+    if (codepoint >= 0xD800 && codepoint <= 0xDFFF) {
         ch_as_string += readchar();
         ch_as_string = normalise_utf8(ch_as_string);
     }
@@ -91,9 +91,15 @@ std::string win_readchar::readkey() {
     return ch_as_string;
 }
 
-std::string win_readchar::normalise_utf8(std::string utf8_input) {
+uint32_t win_readchar::get_codepoint(const std::string &utf8_input) {
     auto it = utf8_input.begin();
     const uint32_t codepoint = utf8::next(it, utf8_input.end());
+    return codepoint;
+}
+
+
+std::string win_readchar::normalise_utf8(const std::string &utf8_input) {
+    const uint32_t codepoint = get_codepoint(utf8_input);
     std::string out;
     utf8::append(codepoint, std::back_inserter(out));
     return out;
