@@ -56,7 +56,8 @@ std::string win_readchar::readkeyNonBlocking() {
         ch_as_string = std::string() + '\x00' + ch2;
     }
 
-    if ("\uD800" <= ch_as_string && ch_as_string <= "\uDFFF") {
+    const uint32_t codepoint = get_codepoint(ch_as_string);
+    if (codepoint >= 0xD800 && codepoint <= 0xDFFF) {
         const int ch3_as_int = readcharNonBlocking();
         char ch3 = static_cast<char>(ch3_as_int);
 
