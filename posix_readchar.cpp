@@ -3,7 +3,7 @@
 //
 
 
-#ifndef _win32
+#ifndef _WIN32
 
 #include "posix_readchar.h"
 
