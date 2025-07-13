@@ -11,7 +11,17 @@
 #include <vector>
 
 namespace posix_readchar {
+    class posix_readchar_helper {
+        static int old_flags;
+    public:
+        static void set_nonblocking(int fd, bool enable);
+    };
+
+    char readcharNonBlocking();
+
     char readchar();
+
+    std::string readkeyNonBlocking();
 
     std::string readkey();
 }
