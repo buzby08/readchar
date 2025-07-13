@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#ifdef _win32
+#ifdef _WIN32
 #include "win_readchar.h"
 #else
 #include "posix_readchar.h"
