@@ -2,6 +2,8 @@
 // Created by busby08 on 11/07/25.
 //
 
+#ifdef _WIN32
+
 #include "win_readchar.h"
 
 #include <cstdint>
@@ -9,7 +11,6 @@
 #include "utf8.h"
 #include "library.h"
 
-#ifdef _WIN32
 
 template <typename T>
 bool vector_contains(const std::vector<T> &vector, const T &element) {
@@ -21,21 +22,58 @@ bool vector_contains(const std::vector<T> &vector, const T &element) {
     return false;
 }
 
-int win_readchar::readchar() {
+int win_readchar::readcharNonBlocking() {
     if (_kbhit()) {
-        return static_cast<unsigned char>(_getwch()); // Does not echo
-    } else {
-        return -1; // Nothing pressed
+        return static_cast<unsigned char>(_getwch());
     }
+
+    return -1;
+}
+
+char win_readchar::readchar() {
+    return _getwch();
+}
+
+std::string win_readchar::readkeyNonBlocking() {
+    const int ch_as_int = readcharNonBlocking();
+    if (ch_as_int == -1)
+        return "";
+
+    const char ch = static_cast<char>(ch_as_int);
+
+    std::string ch_as_string = std::string() + ch;
+
+    if (vector_contains(readchar::INTERRUPT_KEYS, ch))
+        throw readchar::exceptions::KeyboardInterrupt();
+
+    const std::vector check_one = {'\x00', '\xe0'};
+    if (vector_contains(check_one, ch)) {
+        const int ch2_as_int = readcharNonBlocking();
+        char ch2 = static_cast<char>(ch2_as_int);
+
+        if (ch2_as_int == -1)
+            ch2 = '';
+
+        ch_as_string = std::string() + '\x00' + ch2;
+    }
+
+    if ("\uD800" <= ch_as_string && ch_as_string <= "\uDFFF") {
+        const int ch3_as_int = readcharNonBlocking();
+        char ch3 = static_cast<char>(ch3_as_int);
+
+        if (ch3_as_int == -1)
+            ch3 = '';
+
+        ch_as_string += ch3;
+        ch_as_string = normalise_utf8(ch_as_string);
+    }
+
+    return ch_as_string;
 }
 
 
 std::string win_readchar::readkey() {
-    const int ch_as_int = readchar();
-    if (ch_as_int == -1)
-        return ""
-
-    const char ch = static_cast<char>(ch_int)
+    const char ch = readchar();
     std::string ch_as_string = std::string() + ch;
 
     if (vector_contains(readchar::INTERRUPT_KEYS, ch))
