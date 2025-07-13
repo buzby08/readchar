@@ -107,7 +107,7 @@ std::string posix_readchar::readkeyNonBlocking() {
     const int c2_as_int = readcharNonBlocking();
     char c2 = static_cast<char>(c2_as_int);
     if (c2_as_int == -1)
-        c2 = '';
+        throw readchar::exceptions::MissingCharacter();
 
     const std::vector c2_block = {'\x4f', '\x5b'};
     if (!vector_contains(c2_block, c2))
@@ -116,7 +116,7 @@ std::string posix_readchar::readkeyNonBlocking() {
     const int c3_as_int = readcharNonBlocking();
     const char c3 = static_cast<char>(c3_as_int);
     if (c3_as_int == -1)
-        c3 = '';
+        throw readchar::exceptions::MissingCharacter();
 
     const std::vector c3_block = {'\x31', '\x32', '\x33', '\x34', '\x35', '\x36'};
     if (!vector_contains(c3_block, c3))
@@ -125,7 +125,7 @@ std::string posix_readchar::readkeyNonBlocking() {
     const int c4_as_int = readcharNonBlocking();
     const char c4 = static_cast<char>(c4_as_int);
     if (c4_as_int == -1)
-        c4 = '';
+        throw readchar::exceptions::MissingCharacter();
 
     const std::vector c4_block = {
         '\x31', '\x32', '\x33', '\x34', '\x35', '\x37', '\x38', '\x39'};
@@ -135,7 +135,7 @@ std::string posix_readchar::readkeyNonBlocking() {
     const int c5_as_int = readcharNonBlocking();
     const char c5 = static_cast<char>(c5_as_int);
     if (c5_as_int == -1)
-        c5 = '';
+        throw readchar::exceptions::MissingCharacter();
 
     return std::string() + c1 + c2 + c3 + c4 + c5;
 }

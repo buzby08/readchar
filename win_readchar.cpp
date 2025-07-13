@@ -52,7 +52,7 @@ std::string win_readchar::readkeyNonBlocking() {
         char ch2 = static_cast<char>(ch2_as_int);
 
         if (ch2_as_int == -1)
-            ch2 = '';
+            throw readchar::exceptions::MissingCharacter();
 
         ch_as_string = std::string() + '\x00' + ch2;
     }
@@ -62,7 +62,7 @@ std::string win_readchar::readkeyNonBlocking() {
         char ch3 = static_cast<char>(ch3_as_int);
 
         if (ch3_as_int == -1)
-            ch3 = '';
+            throw readchar::exceptions::MissingCharacter();
 
         ch_as_string += ch3;
         ch_as_string = normalise_utf8(ch_as_string);

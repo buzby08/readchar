@@ -60,6 +60,13 @@ namespace readchar::exceptions {
                 return "KeyboardInterrupt: Ctrl+C pressed.";
             }
         };
+
+    class MissingCharacter final : public std::exception {
+    public:
+        [[nodiscard]] const char* what() const noexcept override {
+            return "MissingCharacter: A character was missing in a non-blocking call";
+        }
+    }
 }
 
 namespace readchar {
