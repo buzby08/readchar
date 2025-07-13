@@ -74,7 +74,7 @@ namespace readchar {
 
     inline int readcharNonBlocking() {
         #ifdef _WIN32
-                return win_readchar::win_readcharNonBlocking();
+                return win_readchar::readcharNonBlocking();
         #else
                 return posix_readchar::readcharNonBlocking();
         #endif
@@ -82,7 +82,7 @@ namespace readchar {
 
     inline char readchar() {
         #ifdef _WIN32
-                return win_readchar::win_readchar();
+                return win_readchar::readchar();
         #else
                 return posix_readchar::readchar();
         #endif
@@ -90,7 +90,7 @@ namespace readchar {
 
     inline std::string readkeyNonBlocking() {
         #ifdef _WIN32
-                return win_readchar::win_readkeyNonBlocking();
+                return win_readchar::readkeyNonBlocking();
         #else
                 return posix_readchar::readkeyNonBlocking();
         #endif
@@ -98,7 +98,7 @@ namespace readchar {
 
     inline std::string readkey() {
         #ifdef _WIN32
-            return win_readchar::win_readkey();
+            return win_readchar::readkey();
         #else
             return posix_readchar::readkey();
         #endif
