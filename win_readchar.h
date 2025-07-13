@@ -12,7 +12,12 @@
 #include <conio.h>
 
 namespace win_readchar {
+    int readcharNonBlocking();
+
     char readchar();
+
+    std::string readkeyNonBlocking();
+
     std::string readkey();
 
     std::string normalise_utf8(std::string utf8_input);

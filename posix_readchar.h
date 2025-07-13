@@ -17,7 +17,7 @@ namespace posix_readchar {
         static void set_nonblocking(int fd, bool enable);
     };
 
-    char readcharNonBlocking();
+    int readcharNonBlocking();
 
     char readchar();
 

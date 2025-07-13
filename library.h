@@ -65,7 +65,7 @@ namespace readchar::exceptions {
 namespace readchar {
     inline const std::vector INTERRUPT_KEYS = {keys::CTRL_C};
 
-    inline char readcharNonBlocking() {
+    inline int readcharNonBlocking() {
         #ifdef _WIN32
                 return win_readchar::win_readcharNonBlocking();
         #else

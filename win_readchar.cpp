@@ -21,13 +21,21 @@ bool vector_contains(const std::vector<T> &vector, const T &element) {
     return false;
 }
 
-char win_readchar::readchar() {
-    return static_cast<char>(_getwch());
+int win_readchar::readchar() {
+    if (_kbhit()) {
+        return static_cast<unsigned char>(_getwch()); // Does not echo
+    } else {
+        return -1; // Nothing pressed
+    }
 }
 
 
 std::string win_readchar::readkey() {
-    const char ch = readchar();
+    const int ch_as_int = readchar();
+    if (ch_as_int == -1)
+        return ""
+
+    const char ch = static_cast<char>(ch_int)
     std::string ch_as_string = std::string() + ch;
 
     if (vector_contains(readchar::INTERRUPT_KEYS, ch))

@@ -37,7 +37,7 @@ void posix_readchar::posix_readchar_helper::set_nonblocking(int fd, bool enable)
     fcntl(fd, F_SETFL, old_flags);
 }
 
-char posix_readchar::readcharNonBlocking() {
+int posix_readchar::readcharNonBlocking() {
     struct termios old_settings, term;
 
     char ch;
@@ -46,40 +46,25 @@ char posix_readchar::readcharNonBlocking() {
     tcgetattr(fd, &old_settings);
     term = old_settings;
 
+    int result = 0;
+
     try {
         term.c_lflag &= ~(ICANON | ECHO | IGNBRK | BRKINT);
         tcsetattr(fd, TCSANOW, &term);
 
         posix_readchar_helper::set_nonblocking(fd, true);
 
-        read(fd, &ch, 1);
+        result = read(fd, &ch, 1);
 
     } catch (...) {}
 
     tcsetattr(fd, TCSADRAIN, &old_settings);
     posix_readchar_helper::set_nonblocking(fd, false);
 
-    return ch;
+    if (result > 0)
+        return static_cast<unsigned char>(ch);
 
-    // struct termios old_settings, term;
-    // int fd = fileno(stdin);
-    // char ch;
-    //
-    // tcgetattr(fd, &old_settings);
-    // term = old_settings;
-    // term.c_lflag &= ~(ICANON | ECHO);
-    // tcsetattr(fd, TCSANOW, &term);
-    //
-    // int old_flags = fcntl(fd, F_GETFL, 0);
-    // fcntl(fd, F_SETFL, old_flags | O_NONBLOCK);
-    //
-    // int result = read(fd, &ch, 1);
-    //
-    // tcsetattr(fd, TCSANOW, &old_settings);
-    // fcntl(fd, F_SETFL, old_flags);
-    //
-    // if (result > 0) return ch;
-    // return -1;
+    return -1;
 }
 
 char posix_readchar::readchar() {
@@ -105,7 +90,12 @@ char posix_readchar::readchar() {
 }
 
 std::string posix_readchar::readkeyNonBlocking() {
-    char c1 = readcharNonBlocking();
+    const int c1_as_int = readcharNonBlocking();
+
+    if (c1_as_int == -1)
+        return "";
+
+    const char c1 = static_cast<char>(c1_as_int);
 
     if (vector_contains(readchar::INTERRUPT_KEYS, c1))
         throw readchar::exceptions::KeyboardInterrupt();
