@@ -13,6 +13,7 @@
 namespace posix_readchar {
     class posix_readchar_helper {
         inline static int old_flags = -1;
+
     public:
         static void set_nonblocking(int fd, bool enable);
     };
