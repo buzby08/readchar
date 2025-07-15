@@ -27,14 +27,18 @@ bool vector_contains(const std::vector<T> &vector, const T &element) {
 }
 
 
-void posix_readchar::posix_readchar_helper::set_nonblocking(int fd, bool enable) {
-    if (enable) {
-        old_flags = fcntl(fd, F_GETFL, 0);
-        fcntl(fd, F_SETFL, old_flags | O_NONBLOCK);
-        return;
-    }
+void posix_readchar::posix_readchar_helper::set_nonblocking(const int fd, const bool enable) {
+    try {
+        if (enable) {
+            old_flags = fcntl(fd, F_GETFL, 0);
+            fcntl(fd, F_SETFL, old_flags | O_NONBLOCK);
+            return;
+        }
 
-    fcntl(fd, F_SETFL, old_flags);
+        fcntl(fd, F_SETFL, old_flags);
+    } catch (...) {
+        throw readchar::exceptions::NonBlocking();
+    }
 }
 
 int posix_readchar::readcharNonBlocking() {

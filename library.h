@@ -67,6 +67,13 @@ namespace readchar::exceptions {
             return "MissingCharacter: A character was missing in a non-blocking call";
         }
     };
+
+    class NonBlocking final : public std::exception {
+    public:
+        [[nodiscard]] const char *what() const noexcept override {
+            return "NonBlocking: Cannot reverse non-blocking properties because they were never set";
+        }
+    };
 }
 
 namespace readchar {
